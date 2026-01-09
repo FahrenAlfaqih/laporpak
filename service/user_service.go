@@ -2,25 +2,19 @@ package service
 
 import (
 	"laporpak/model"
+	"laporpak/repository"
 )
 
 var users []model.User
 var lastID = 0
 
-func GetAllUsers() []model.User {
-	return users
+func GetAllUsers() ([]model.User, error) {
+	return repository.GetAllUsers()
 }
 
-func CreateUser(name string) model.User {
-	lastID++
+func CreateUser(name string) (model.User, error) {
+	return repository.CreateUser(name)
 
-	user := model.User{
-		ID:   lastID,
-		Name: name,
-	}
-
-	users = append(users, user)
-	return user
 }
 
 func UpdateUser(id int, name string) (model.User, bool) {

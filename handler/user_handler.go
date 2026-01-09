@@ -10,22 +10,34 @@ import (
 )
 
 func GetUsers(c *gin.Context) {
-	users := service.GetAllUsers()
-	c.JSON(http.StatusOK, users)
+	users, err := service.GetAllUsers()
+	if err != nil {
+		c.JSON(500, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	c.JSON(200, users)
 }
 
 func CreateUser(c *gin.Context) {
 	var req model.User
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(400, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
 
-	user := service.CreateUser(req.Name)
-	c.JSON(http.StatusCreated, user)
+	user, err := service.CreateUser(req.Name)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	c.JSON(201, user)
 }
 
 func UpdateUser(c *gin.Context) {

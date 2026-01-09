@@ -1,8 +1,12 @@
 package main
 
-import "laporpak/router"
+import (
+	"laporpak/database"
+	"laporpak/router"
+)
 
 func main() {
+	database.Connect()
 	router.StartServer()
 
 }
